@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import json
+
+with open('blog_project/config.json') as f:
+    json_object = json.load(f)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,10 +82,10 @@ WSGI_APPLICATION = "blog_project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "",
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        "NAME": json_object["DATABASES"]["NAME"],
+        'USER': json_object["DATABASES"]["USER"],
+        'PASSWORD': json_object["DATABASES"]["PASSWORD"],
+        'HOST': json_object["DATABASES"]["HOST"],
         'PORT': 5432,
     }
 }
