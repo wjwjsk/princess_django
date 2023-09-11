@@ -8,9 +8,24 @@
 
     2. pip install -r requirements.txt
 
-    3.
+    3. cd blog_project
+
+    4. python manage.py runserver
+
+
+## 개발 순서
+
+    1. templates
+   
+    2. css/js
+   
+    3. models
+   
+    4. view
+
 
 ## 기능
+
     기능 1: 설명
 
     기능 2: 설명
