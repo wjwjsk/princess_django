@@ -1,11 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/index.css' %}" rel="stylesheet" />
+    <link href="https://fonts.cdnfonts.com/css/quicksilver" rel="stylesheet">
     <title>Document</title>
 </head>
+
 <body>
-    <h1>안녕하세요!</h1>
+    <div class="navbar-container">
+        <ul class="navbar">
+            <div class="title">
+                <img src="{% static 'img/logo_white.png' %}" alt="logo">
+                <h1 class="h1_on_img">PrincessBLOG</h1>
+            </div>
+            <li><a href="#">일상</a></li>
+            <li><a href="#">요리</a></li>
+            <li><a href="#">여행</a></li>
+            <li><a href="#">영화</a></li>
+            <li><a href="#">IT</a></li>
+            <li><a href="#">Logout</a></li>
+            <button>Just Write!</button>
+        </ul>
+    </div>
 </body>
+
 </html>
