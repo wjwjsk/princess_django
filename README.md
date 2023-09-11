@@ -19,6 +19,6 @@
 
 ## 기술 스택
 
-    프론트엔드: React
-    백엔드: Node.js, Express
-    데이터베이스: MongoDB
+    프론트엔드: JavaScript
+    백엔드: Python, Django
+    데이터베이스: Postgres
