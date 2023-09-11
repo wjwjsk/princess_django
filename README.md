@@ -4,9 +4,9 @@
 
 ## 시작하기
 
-    1.
+    1. 가상환경 진입 후
 
-    2.
+    2. pip install -r requirements.txt
 
     3.
 
