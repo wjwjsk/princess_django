@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{#    <link href="{% static 'reset.css' %}" rel="stylesheet" />#}
+{#    <link href="{% static '/css/postBase.css' %}" rel="stylesheet" />#}
+{#    <link href="{% static "css/main.css" %}" rel="stylesheet" >#}
+    <link rel="stylesheet" href="../blog_app/static/css/reset.css">
+    <link rel="stylesheet" href="../blog_app/static/css/postBase.css">
+
+    <link href="https://fonts.cdnfonts.com/css/quicksilver" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <nav>
+        <div class="navbar-container">
+            <div class="title">
+                <img src="../blog_app/static/image/postlog.svg" alt="logo">
+                <h1 class="h1_on_img">MYLOG</h1>
+            </div>
+
+            <div>
+                <ul class="navbar-main-menu">
+                    <li><a href="#">일상</a></li>
+                    <li><a href="#">요리</a></li>
+                    <li><a href="#">여행</a></li>
+                    <li><a href="#">영화</a></li>
+                    <li><a href="#">IT</a></li>
+                </ul>
+
+                <div class="navbar-actions-container">
+                    <button class="login_btn" login_btn>Logout</button>
+
+                    <button class="write_btn">Just Write!</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="content-container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer>
+
+        
+    </footer>
+
+
+</body>
+
+</html>
