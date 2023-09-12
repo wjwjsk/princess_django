@@ -5,27 +5,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{% static 'css/index.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{% static '/css/styles.css' %}"> 
     <link href="https://fonts.cdnfonts.com/css/quicksilver" rel="stylesheet">
-    <title>Document</title>
+    <title>PrincessBLOG</title>
 </head>
 
 <body>
-    <div class="navbar-container">
-        <ul class="navbar">
-            <div class="title">
-                <img src="{% static 'img/logo_white.png' %}" alt="logo">
-                <h1 class="h1_on_img">PrincessBLOG</h1>
+    {% include 'navbar.html'%}
+    <div class="main-container">
+        <div class="most-view-post">
+            <div class="most-view-post-description">
+                <a href="{% url 'post' %}">
+                    <h1>{{ most_view_post.title }}</h1>
+                    <p>{{ most_view_post.content }}</p>
+                </a>
+                <button><a href="{% url 'post' %}">Read More</a></button>
             </div>
-            <li><a href="#">일상</a></li>
-            <li><a href="#">요리</a></li>
-            <li><a href="#">여행</a></li>
-            <li><a href="#">영화</a></li>
-            <li><a href="#">IT</a></li>
-            <li><a href="#">Logout</a></li>
-            <button>Just Write!</button>
-        </ul>
+            <div class="post-image">
+                <a href="{% url 'post' %}">
+                    <img src="{{ most_view_post.image }}" alt="image">
+                </a>
+            </div>
+        </div>
+        <div class="postlist-container">
+            <div class="postlist">
+                {% for post in posts %}
+                    <a href="{% url 'post' %}">
+                        <div>
+                            <img src="{{ post.image }}" alt="image">
+                        </div>
+                        <div>
+                            <p id="postlist-date"> {{post.write_date}}</p>
+                            <h3 id="postlist-title">{{post.title}}</h3>
+                            <p id="postlist-content">{{post.content}}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+    {% include 'footer.html'%}
 </body>
 
 </html>
