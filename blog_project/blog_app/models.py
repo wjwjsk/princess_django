@@ -1,33 +1,40 @@
 from django.db import models
+from django.utils import timezone
 
-# Create your models here.
 
-
-# TOPIC 모델
 class Topic(models.Model):
-    TOPIC_ID = models.AutoField(primary_key=True)
-    NAME = models.CharField(max_length=30)
-    USE_YN = models.BooleanField(default=True)
-
-    class Meta:
-        db_table = "TOPIC"
-        verbose_name = "토픽 정보"
-        verbose_name_plural = "토픽 정보"
+    topic_id = models.AutoField(primary_key=True, db_column="topic_id", default="")
+    name = models.CharField(max_length=30, db_column="name", unique=True)  # NOT NULL 추가
+    use_yn = models.BooleanField(default=True, db_column="use_yn")
 
 
-# BOARD 모델
+class Meta:
+    db_table = "TOPIC"
+    verbose_name = "토픽 정보"
+
+
+def str(self):
+    return self.name
+
+
 class Board(models.Model):
-    BOARD_ID = models.AutoField(primary_key=True)
-    TOPIC_ID = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    TITLE = models.TextField()
-    CONTENT = models.TextField()
-    USE_YN = models.BooleanField(default=True)
-    DEL_YN = models.BooleanField(default=False)
-    WRITE_DATE = models.DateField()
-    MODIF_DATE = models.DateField()
+    board_id = models.AutoField(primary_key=True, db_column="board_id", default=0)
+    topic_id = models.ForeignKey(
+        Topic, on_delete=models.CASCADE, db_column="topic_id", to_field="name", default=""
+    )
+    title = models.TextField(db_column="title", null=False, default="")  # NOT NULL 추가
+    content = models.TextField(null=True, blank=True, db_column="content")
+    use_yn = models.BooleanField(default=True, db_column="use_yn")
+    del_yn = models.BooleanField(default=False, db_column="del_yn")
+    write_date = models.DateField(db_column="write_date", null=False, default=timezone.now)
+    modif_date = models.DateField(db_column="modif_date", default=timezone.now)
     viewcount = models.IntegerField(default=0)
 
-    class Meta:
-        db_table = "BOARD"
-        verbose_name = "게시판"
-        verbose_name_plural = "게시판"
+
+class Meta:
+    db_table = "BOARD"
+    verbose_name = "게시판"
+
+
+def str(self):
+    return self.title
