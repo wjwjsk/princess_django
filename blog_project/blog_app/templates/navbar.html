@@ -1,0 +1,23 @@
+<div class="navbar-container">
+    <div class="navbar">
+        <div class="title">
+            {% comment %} 로고필요 {% endcomment %}
+            <h1 class="h1_on_img">PrincessBLOG</h1>
+        </div>
+        <div class="topics">
+            <ul>
+                {% for topic in topics %}
+                    <li><a href="{% url 'post' %}">{{topic.name}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="login-button">
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">로그아웃</a>
+                <a href="{% url 'post_write' %}"> Just Write!</a>
+            {% else %}
+                <a href="{% url 'login' %}">로그인</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
