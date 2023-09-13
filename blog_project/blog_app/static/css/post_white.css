@@ -4,6 +4,7 @@
     flex-direction: column;
     flex: 1;
     height: 100%;
+    padding: 0 20px;
 }
 
 
@@ -15,6 +16,7 @@
     gap: 10px;
     border: 1px solid #FFF;
     background: #FFF;
+    margin-bottom: 18px;
 }
 
 
