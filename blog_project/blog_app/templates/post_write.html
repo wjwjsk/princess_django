@@ -1,45 +1,87 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% include 'navbar.html'%}
-    <div class="write-main-container">
-        <form method="post" enctype="multipart/form-data">
-            <div class="write-main">
-                {% csrf_token %}
-                <input type="text" name="title" placeholder="제목"></input>
-                <script src="https://cdn.tiny.cloud/1/cig4n9ujjp5wqsgk6jqk8pcfi03mazpxf0hb3h3tz9129744/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>               
-            </div>
-        <div class="write-menu">
-            <div>
-                <img src="{% static 'img/robot.svg' %}" alt="robot">
-                <h3>AI 글 자동완성</h3>
-            </div>
-            <div>
-                <h3>TOPIC</h3>
-                {% for topic in topics %}
-                    <input type="radio" name="{{topic.id}}">{{topic.name}}</input>
-                {% endfor %}
-            </div>
-            <div>
-                <h3>UPLOAD INFO</h3>
-                {% if is_upload %}
-                    <p>상태: 미게시</p>
-                {% else %}
-                    <p>상태: 게시됨</p>
-                {% endif %}
-                {% comment %} 임시저장 기능 필요 {% endcomment %}
-                <button type="submit">글 작성</button>
+{% extends "post_base.html" %}
 
+{% load static %}
+
+{% block static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post_white.css' %}">
+    
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.tiny.cloud/1/cig4n9ujjp5wqsgk6jqk8pcfi03mazpxf0hb3h3tz9129744/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="{% static 'js/post_write.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<form>
+    <input type="file" id="image_input">
+    <div class="post-content-container">
+        <div class="post-title-container">
+            <input type="text" value="" placeholder="타이틀">
+        </div>
+
+        <div class="post-edit-container">
+            
+        </div>
+    </div>
+
+    <div class="post-controller-container">
+        <div class="post-ai-container">
+            <img src="{% static 'img/ai_icon.svg' %}" alt="logo">
+            <p>AI 글 자동완성</p>
+        </div>
+
+        <div class="post-topic-container">
+            <p>TOPIC</p>
+            <div class="post-topic-item">
+                <input type="radio" id="topic_0" name="topic" value="0">
+                <label for="topic_0">일상</label>
+            </div>
+            <div class="post-topic-item">
+                <input type="radio" id="topic_1" name="topic" value="1">
+                <label for="topic_1">요리</label>
+            </div>
+            <div class="post-topic-item">
+                <input type="radio" id="topic_2" name="topic" value="2">
+                <label for="topic_2">여행</label>
+            </div>
+            <div class="post-topic-item">
+                <input type="radio" id="topic_3" name="topic" value="3">
+                <label for="topic_3">영화</label>
+            </div>
+            <div class="post-topic-item">
+                <input type="radio" id="topic_4" name="topic" value="4">
+                <label for="topic_4">IT / 전자기기</label>
             </div>
         </div>
-        </form>
+
+
+        <div class="post-upload-container">
+            <div class="post-info-container" >
+                <p>UPLOAD INFO</p>
+                <p>상태 : 미게시</p>
+                <p><label id="file-label" for="image_input">이미지 업로드</label></p>
+            <div>
+                
+            
+
+            <div class="post-submit-container">
+                <div class="temp-btn">
+                    <p>임시저장</p>
+                </div>
+
+                <div class="save-btn">
+                    <p>글자성</p>
+                </div>
+            </div>
+        </div>
     </div>
+</form>
+{% endblock %}
+
+
+
 
 
     {% include 'footer.html'%}

@@ -1,3 +1,7 @@
+body {
+    background: #F9F8F4;
+}
+
 .navbar-container {
     display: flex;
     align-items: center;
@@ -88,7 +92,15 @@
 
 .content-container {
     display: flex;
+    justify-content: space-around;
+}
 
+.main-container {
+    position: relative;
+    display: flex;
+    height: calc(100vh - 105px);;
+    width: 70%;
+    
 }
 
 footer {

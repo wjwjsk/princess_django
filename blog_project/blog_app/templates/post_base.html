@@ -1,16 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{#    <link href="{% static 'reset.css' %}" rel="stylesheet" />#}
-{#    <link href="{% static '/css/postBase.css' %}" rel="stylesheet" />#}
-{#    <link href="{% static "css/main.css" %}" rel="stylesheet" >#}
-    <link rel="stylesheet" href="../blog_app/static/css/reset.css">
-    <link rel="stylesheet" href="../blog_app/static/css/postBase.css">
-
+    <link href="{% static 'css/reset.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/post_base.css' %}" rel="stylesheet" />
+    
     <link href="https://fonts.cdnfonts.com/css/quicksilver" rel="stylesheet">
+    {% block static%}
+    {% endblock %}
     <title>Document</title>
 </head>
 
@@ -18,7 +18,7 @@
     <nav>
         <div class="navbar-container">
             <div class="title">
-                <img src="../blog_app/static/image/postlog.svg" alt="logo">
+                <img src="{% static 'img/logo_white.svg' %}" alt="logo">
                 <h1 class="h1_on_img">MYLOG</h1>
             </div>
 
@@ -42,16 +42,22 @@
 
 
     <div class="content-container">
-        {% block content %}
-        {% endblock %}
+        <div class="main-container">
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
+
+
+
 
     <footer>
 
         
     </footer>
 
-
+    {% block javascript %}
+    {% endblock %}
 </body>
 
 </html>

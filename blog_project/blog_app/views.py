@@ -58,6 +58,8 @@ def post_write(request):
     elif request.method == "DELETE":
         # 글 삭제
         # code...
+
         return redirect("/")
-    else:
-        return render(request, "post_write.html")
+    else: 
+        return render(request, 'post_write.html')
+
