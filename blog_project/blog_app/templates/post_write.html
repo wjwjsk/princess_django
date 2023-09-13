@@ -4,6 +4,12 @@
 
 {% block static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/post_white.css' %}">
+    
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.tiny.cloud/1/cig4n9ujjp5wqsgk6jqk8pcfi03mazpxf0hb3h3tz9129744/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="{% static 'js/post_write.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -70,9 +76,7 @@
         </div>
     </div>
 </form>
-
-
-
-
-
 {% endblock %}
+
+
+
