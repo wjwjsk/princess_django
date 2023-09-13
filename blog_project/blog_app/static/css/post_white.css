@@ -78,15 +78,22 @@
     font-size: 12px;
 }
 
-.post-upload-container > p:first-child {
+.post-upload-container  > div > p:first-child {
     font-size: 16px;
 }
-.post-upload-container > p {
+.post-upload-container  > div > p {
     font-size: 13px;
-    padding: 10px 0;
 }
 
-.post-upload-container > p > label{
+.post-info-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.post-upload-container > div > p > label{
     text-decoration: underline;
 }
 
