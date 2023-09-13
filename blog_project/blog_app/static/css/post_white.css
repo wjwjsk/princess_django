@@ -1,0 +1,174 @@
+
+.post-content-container{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+}
+
+
+.post-title-container {
+    display: flex;
+    height: 41px;
+    padding: 11px 16px;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #FFF;
+    background: #FFF;
+}
+
+
+
+.post-edit-container {
+    background: brown;
+    flex: 1;
+
+}
+
+.post-controller-container {
+    display: flex;
+    flex-direction: column;
+    width: 264px;
+    gap: 10px;
+    
+}
+
+.post-controller-container > div{
+    border-radius: 2px;
+    border: 1px solid #CAC8C5;
+}
+
+
+.post-ai-container {
+    cursor: pointer;
+    padding: 16px;
+    gap: 10px;
+    flex-shrink: 0;
+    height: 56px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-topic-container {
+    display: flex;
+    height: 175px;
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.post-topic-container > * {
+    color: #000;
+    font-family: Pretendard;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.post-topic-container > p {
+    font-size: 16px;
+}
+
+.post-topic-container > div > label {
+    font-size: 12px;
+}
+
+.post-upload-container > p:first-child {
+    font-size: 16px;
+}
+.post-upload-container > p {
+    font-size: 13px;
+    padding: 10px 0;
+}
+
+.post-upload-container > p > label{
+    text-decoration: underline;
+}
+
+
+
+
+.post-submit-container {
+    padding: 50px 10px 10px 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.post-submit-container > label {
+    text-decoration: underline;
+}
+
+
+
+
+.post-submit-container > div {
+    display: flex;
+    flex: 1;
+    height: 20px;
+    padding: 4px 17px;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.temp-btn{
+    border-radius: 2px;
+    border: 1px solid #1E1E1E;
+}
+
+.temp-btn > p {
+    color: #1E1E1E;
+    font-family: Pretendard;
+    font-size: 13px;
+}
+
+
+
+
+.save-btn {
+    border-radius: 2px;
+    background: #1E1E1E;
+}
+
+.save-btn > p {
+    color: #FFF;    
+    font-family: Pretendard;
+    font-size: 13px;
+}
+
+
+
+
+
+    
+
+
+
+
+.post-title-container > input::placeholder {
+    color: #BFBFBF;
+    font-weight: bold;
+  }
+
+.post-title-container > input {
+    display: flex;
+    flex: 1;
+    text-align: left; 
+    border: 1px solid #FFF;
+    background: #FFF;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+#image_input {
+    display: none;
+}
