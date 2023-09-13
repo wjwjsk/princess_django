@@ -1,0 +1,17 @@
+.navbar {
+    display: flex;
+    height: 105px;
+    background: black;
+    color: white;
+    justify-content: space-around;
+}
+
+.topics {
+    display: flex;
+}
+
+.topics > ul {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+}
