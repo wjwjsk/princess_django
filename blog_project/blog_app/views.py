@@ -48,6 +48,6 @@ def postWrite(request):
         # code...
         return redirect('/')
     else: 
-        return render(request, 'postWrite.html')
+        return render(request, 'post_write.html')
 
     
