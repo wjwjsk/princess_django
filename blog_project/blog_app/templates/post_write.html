@@ -13,7 +13,7 @@
             <div class="write-main">
                 {% csrf_token %}
                 <input type="text" name="title" placeholder="제목"></input>
-                {{ form }}                
+                <script src="https://cdn.tiny.cloud/1/cig4n9ujjp5wqsgk6jqk8pcfi03mazpxf0hb3h3tz9129744/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>               
             </div>
         <div class="write-menu">
             <div>
@@ -44,4 +44,5 @@
 
     {% include 'footer.html'%}
 </body>
+<script src="{% static 'js/script.js' %}"></script>
 </html>
