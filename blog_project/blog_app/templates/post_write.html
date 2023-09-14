@@ -4,7 +4,6 @@
 
 {% block static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/post_white.css' %}">
-    
 {% endblock %}
 
 {% block javascript %}
@@ -15,13 +14,13 @@
 {% block content %}
 
 <form>
-    <input type="file" id="image_input">
+    <input type="file" id="image_input"/>
     <div class="post-content-container">
         <div class="post-title-container">
             <input type="text" value="" placeholder="타이틀">
         </div>
 
-        <div class="post-edit-container">
+        <div class="post-edit-container" id="content">
             
         </div>
     </div>
@@ -62,9 +61,7 @@
                 <p>UPLOAD INFO</p>
                 <p>상태 : 미게시</p>
                 <p><label id="file-label" for="image_input">이미지 업로드</label></p>
-            <div>
-                
-            
+            </div>
 
             <div class="post-submit-container">
                 <div class="temp-btn">
@@ -79,12 +76,3 @@
     </div>
 </form>
 {% endblock %}
-
-
-
-
-
-    {% include 'footer.html'%}
-</body>
-<script src="{% static 'js/script.js' %}"></script>
-</html>
