@@ -40,7 +40,7 @@
                                 {% comment %} <img src="{{ post.image }}" alt="image"> {% endcomment %}
                             </div>
                             <div class="card-info-box">
-                                <p id="postlist-date"> {{post.write_date}}</p>
+                                <p id="postlist-date"> {{post.write_date|date:'Y-m-d H:i:s'}}</p>
                                 <h3 id="postlist-title">{{post.title}}</h3>
                                 <p id="postlist-content">{{post.content}}</p>
                             </div>

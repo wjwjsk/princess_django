@@ -18,8 +18,8 @@ class Board(models.Model):
     content = models.TextField()
     use_yn = models.BooleanField(blank=True, null=True)
     del_yn = models.BooleanField(blank=True, null=True)
-    write_date = models.DateField()
-    modif_date = models.DateField(blank=True, null=True)
+    write_date = models.DateTimeField(auto_now_add=True)
+    modif_date = models.DateTimeField(blank=True, null=True)
     viewcount = models.IntegerField()
     topic = models.ForeignKey('Topic', models.DO_NOTHING)
 
