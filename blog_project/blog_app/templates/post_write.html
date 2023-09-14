@@ -13,15 +13,19 @@
 
 {% block content %}
 
+<form method="post" id="uploadform" enctype="multipart/form-data">
+{% csrf_token %}
+<input type="file" id="image_input"/>
+</form>
 <form>
-    <input type="file" id="image_input"/>
+
     <div class="post-content-container">
         <div class="post-title-container">
-            <input type="text" value="" placeholder="타이틀">
         </div>
+            <input type="text" value="" placeholder="타이틀">
 
         <div class="post-edit-container" id="content">
-            
+
         </div>
     </div>
 
