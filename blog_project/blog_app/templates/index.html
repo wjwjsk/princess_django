@@ -14,33 +14,39 @@
     {% include 'navbar.html'%}
     <div class="main-container">
         <div class="most-view-post">
-            <div class="most-view-post-description">
-                <a href="{% url 'post' %}">
-                    <h1>{{ most_view_post.title }}</h1>
-                    <p>{{ most_view_post.content }}</p>
-                </a>
-                <button><a href="{% url 'post' %}">Read More</a></button>
-            </div>
-            <div class="post-image">
-                <a href="{% url 'post' %}">
-                    <img src="{{ most_view_post.image }}" alt="image">
-                </a>
+            <div class="container">
+                <div class="most-view-post-description">
+                    <a href="{% url 'post' %}">
+                        <h3>{{ most_view_post.title }}</h3>
+                        <p>{{ most_view_post.content }}</p>
+                    </a>
+                    <button><a href="{% url 'post' %}">Read More</a></button>
+                </div>
+                <div class="post-image">
+                    <a href="{% url 'post' %}">
+                        <img src="{% static '/img/abc.png' %}">
+                        {% comment %} <img src="{{ most_view_post.image }}" alt="image"> {% endcomment %}
+                    </a>
+                </div>
             </div>
         </div>
         <div class="postlist-container">
             <div class="postlist">
-                {% for post in posts %}
-                    <a href="{% url 'post' %}">
-                        <div>
-                            <img src="{{ post.image }}" alt="image">
-                        </div>
-                        <div>
-                            <p id="postlist-date"> {{post.write_date}}</p>
-                            <h3 id="postlist-title">{{post.title}}</h3>
-                            <p id="postlist-content">{{post.content}}</p>
-                        </div>
-                    </a>
-                {% endfor %}
+                    {% for post in posts %}
+                    <div class="card">
+                        <a href="{% url 'post' %}">
+                            <div class="card-thumbnail-img">
+                                <img src="{% static '/img/abc.png' %}">
+                                {% comment %} <img src="{{ post.image }}" alt="image"> {% endcomment %}
+                            </div>
+                            <div class="card-info-box">
+                                <p id="postlist-date"> {{post.write_date}}</p>
+                                <h3 id="postlist-title">{{post.title}}</h3>
+                                <p id="postlist-content">{{post.content}}</p>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
             </div>
         </div>
     </div>

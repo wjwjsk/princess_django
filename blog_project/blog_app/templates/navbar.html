@@ -4,20 +4,32 @@
             {% comment %} 로고필요 {% endcomment %}
             <h1 class="h1_on_img">PrincessBLOG</h1>
         </div>
-        <div class="topics">
-            <ul>
-                {% for topic in topics %}
-                    <li><a href="{% url 'post' %}">{{topic.name}}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="login-button">
-            {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}">로그아웃</a>
-                <a href="{% url 'post_write' %}"> Just Write!</a>
-            {% else %}
-                <a href="{% url 'login' %}">로그인</a>
-            {% endif %}
+        <div class= "navbar-menu">
+            <div class="topics">
+                <ul>
+                    {% for topic in topics %}
+                        <li><a href="{% url 'post' %}">{{topic.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">
+                        <div class="login-button">
+                            <button class="logout-button">로그아웃</button>
+                        </div>
+                    </a>
+                    <a href="{% url 'post_write' %}">
+                        <div class="login-button">
+                            <button>Just Write!</button>
+                        </div>
+                    </a>
+                {% else %}
+                <a href="{% url 'login' %}">
+                    <div class="login-button">
+                        <button>로그인</button>
+                    </div>
+                </a>
+                {% endif %}
         </div>
     </div>
 </div>

@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import json
 
-with open('blog_project/config.json') as f:
+with open("blog_project/config.json") as f:
     json_object = json.load(f)
 
 
@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-@txt7h8ej=fg5$y$evf60%pgaq!46fbc@mp&x5eq#tl+8h_a6u"
+SECRET_KEY = json_object["DJANGO_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "blog_app",
-    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -57,14 +56,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "blog_project.urls"
-
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': '100%',
-    },
-}
 
 
 TEMPLATES = [
@@ -93,10 +84,10 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": json_object["DATABASES"]["NAME"],
-        'USER': json_object["DATABASES"]["USER"],
-        'PASSWORD': json_object["DATABASES"]["PASSWORD"],
-        'HOST': json_object["DATABASES"]["HOST"],
-        'PORT': 5432,
+        "USER": json_object["DATABASES"]["USER"],
+        "PASSWORD": json_object["DATABASES"]["PASSWORD"],
+        "HOST": json_object["DATABASES"]["HOST"],
+        "PORT": 5432,
     }
 }
 
@@ -131,6 +122,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
