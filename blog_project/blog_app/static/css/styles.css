@@ -1,5 +1,6 @@
 body{
     margin: 0;
+    overflow-x: hidden;
 }
 
 .navbar {
@@ -126,6 +127,7 @@ button:hover{
       width: 80%;
       margin-bottom: 10px;
       display: -webkit-box;
+      line-break: anywhere;
       -webkit-line-clamp : 3;
       overflow: hidden;
       -webkit-box-orient: vertical;
@@ -139,6 +141,13 @@ button:hover{
       height: 415px;
       margin-top: 50px;
   }
+
+  .post-image:hover {
+    transform: scale(1.1);
+    transition: 0.5s;
+    overflow: hidden;
+  }
+
   
   .most-view-post .container .most-view-post-description{
     flex: 1;
@@ -245,6 +254,7 @@ h3 {
   font-size: 14px;
   margin-bottom: 8px;
   -webkit-line-clamp : 2;
+  line-break: anywhere;
   overflow: hidden;
   -webkit-box-orient: vertical;
 }
