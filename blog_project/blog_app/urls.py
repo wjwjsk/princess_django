@@ -2,6 +2,9 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from .views import CustomLoginView
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 
 
@@ -13,7 +16,4 @@ urlpatterns = [
     path(r"post/<int:board_id>", views.postDtl, name="postDtl"),
     path(r"post/write", views.post_write, name="post_write"),
     path('post/write/upload', views.imageUpload, name='imageUpload'),
-
-
-
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
