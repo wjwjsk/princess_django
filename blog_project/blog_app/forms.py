@@ -20,7 +20,7 @@ class CustomAuthenticationForm(AuthenticationForm):
         
 class BlogPostForm(forms.ModelForm):
     class Meta:
-        model = BlogPost
+        # model = BlogPost
         exclude = ['created_at']
 
     def __init__(self, *args, **kwargs):

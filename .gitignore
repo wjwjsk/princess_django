@@ -1,4 +1,4 @@
-django_env
+myenv
 \__pycache__
 config.json
 migrations
