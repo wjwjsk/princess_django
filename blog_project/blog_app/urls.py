@@ -19,3 +19,4 @@ urlpatterns = [
     path(r"post/write", views.post_write, name="post_write"),
     path('post/write/upload', views.imageUpload, name='imageUpload'),
     path(r"api/", include(router.urls)),
+]

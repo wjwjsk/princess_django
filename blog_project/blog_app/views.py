@@ -142,6 +142,6 @@ def post_list(request, topic=None):
 #                 post.topic = '전체'
 
 # post_list에 대한 작업 해야함.
-    else:
-        return render(request, "post_write.html")
+    # else:
+    #     return render(request, "post_write.html")
 
