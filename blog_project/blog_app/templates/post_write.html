@@ -8,24 +8,54 @@
 
 {% block javascript %}
 <script src="https://cdn.tiny.cloud/1/cig4n9ujjp5wqsgk6jqk8pcfi03mazpxf0hb3h3tz9129744/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-<script src="{% static 'js/post_write.js' %}"></script>
+<script>
+
+    tinymce.init({
+        selector: '#content',
+        images_upload_url: "{% url 'imageUpload' %}",
+    });
+
+    document.querySelector("#image_input").addEventListener('change', function() {
+      let formData = new FormData();
+      formData.append('file', this.files[0]);
+
+      fetch("{% url 'imageUpload' %}", {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': "{{ csrf_token }}"
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        tinyMCE.activeEditor.insertContent(`<img src="/media/${data.file_path}"/>`);
+      })
+      .catch(error => {
+        console.error('Error:', error)
+      });
+    });
+
+</script>
 {% endblock %}
 
 {% block content %}
 
 <form method="post" id="uploadform" enctype="multipart/form-data">
-{% csrf_token %}
-<input type="file" id="image_input"/>
+    <input type="file" id="image_input"/>
 </form>
-<form>
 
+<form method="post" id="uploadform" action="{% url 'post_write' %}">
+    {% csrf_token %}
     <div class="post-content-container">
         <div class="post-title-container">
+            <input type="text" name="title" value="" placeholder="타이틀">
         </div>
-            <input type="text" value="" placeholder="타이틀">
 
-        <div class="post-edit-container" id="content">
+        <div class="post-edit-container">
+           <textarea id="content" name="content">
 
+           </textarea>
         </div>
     </div>
 
