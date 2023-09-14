@@ -1,5 +1,6 @@
 body{
     margin: 0;
+    overflow-x: hidden;
 }
 
 .navbar {
@@ -140,6 +141,13 @@ button:hover{
       height: 415px;
       margin-top: 50px;
   }
+
+  .post-image:hover {
+    transform: scale(1.1);
+    transition: 0.5s;
+    overflow: hidden;
+  }
+
   
   .most-view-post .container .most-view-post-description{
     flex: 1;
