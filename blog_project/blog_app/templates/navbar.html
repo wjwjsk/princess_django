@@ -1,14 +1,15 @@
+{% load static %}
 <div class="navbar-container">
     <div class="navbar">
-        <div class="title">
-            {% comment %} 로고필요 {% endcomment %}
-            <h1 class="h1_on_img">PrincessBLOG</h1>
+        <div class="title"> 
+            {% comment %} <img src="{% static 'img/logo.png' %}" alt="logo"> {% endcomment %}
+            <a href="{% url 'index' %}"><h1 class="h1_on_img">PrincessBLOG</h1></a>
         </div>
         <div class= "navbar-menu">
             <div class="topics">
                 <ul>
                     {% for topic in topics %}
-                        <li><a href="{% url 'post' %}">{{topic.name}}</a></li>
+                        <li><a href="{% url 'index'%}?topic={{topic.name}}">{{topic.name}}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -24,7 +25,7 @@
                         </div>
                     </a>
                 {% else %}
-                <a href="{% url 'login' %}">
+                <a href="{% url 'login' %}?next={{ request.path }}"> {% comment %} 로그인을 누른 페이지로 리다이렉트 {% endcomment %}
                     <div class="login-button">
                         <button>로그인</button>
                     </div>
