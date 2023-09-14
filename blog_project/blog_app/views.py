@@ -1,5 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import views as auth_view
+from .forms import CustomAuthenticationForm
+from .forms import BlogPostForm
 from django.contrib.auth.views import LoginView
 from .forms import CustomAuthenticationForm, FileUploadForm
 from django.urls import reverse_lazy
@@ -99,5 +101,47 @@ def post_write(request):
         # code...
 
         return redirect("/")
+      
+    else: 
+        return render(request, 'post_write.html')
+
+
+def post_list(request, topic=None):
+    
+    if topic:
+        posts = Board.objects.filter(topic=topic, publish='Y').order_by('-views')
+    
+    else:
+        posts = Board.objects.filter(publish='Y').order_by('-views') 
+    return render(request, 'blog_app/post_list.html', {'posts': posts})
+
+
+
+
+# def create_or_update_post(request, post_id=None):
+#     # 글수정 페이지의 경우
+#     if post_id:
+#         post = get_object_or_404(Board, id=post_id)
+    
+#     # 글쓰기 페이지의 경우, 임시저장한 글이 있는지 검색 
+#     else:
+#         post = Board.objects.filter(author_id=request.user.username, publish='N').order_by('-created_at').first()
+
+#     # 업로드/수정 버튼 눌렀을 떄
+#     if request.method == 'POST':
+#         form = BlogPostForm(request.POST, instance=post) # 폼 초기화
+#         if form.is_valid():
+#             post = form.save(commit=False)
+
+#             # 게시물 삭제
+#             if 'delete-button' in request.POST:
+#                 post.delete() 
+#                 return redirect('blog_app:post_list') 
+
+#             if not form.cleaned_data.get('topic'):
+#                 post.topic = '전체'
+
+# post_list에 대한 작업 해야함.
     else:
         return render(request, "post_write.html")
+
