@@ -98,8 +98,9 @@ body {
 .main-container {
     position: relative;
     display: flex;
-    height: calc(100vh - 105px);;
-    width: 70%;
+
+    width: 80%;
+    margin: 0 0 100px 0;
     
 }
 

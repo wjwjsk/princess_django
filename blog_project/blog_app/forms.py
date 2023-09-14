@@ -1,5 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from .models import AttachFile
+class FileUploadForm(forms.ModelForm):
+    class Meta:
+        model = AttachFile
+        fields = ['file']
 
 
 class CustomAuthenticationForm(AuthenticationForm):

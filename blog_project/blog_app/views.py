@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Topic, Board
 from django.contrib.auth import views as auth_view
 from django.contrib.auth.views import LoginView
-from .forms import CustomAuthenticationForm
+from .forms import CustomAuthenticationForm, FileUploadForm
 from django.urls import reverse_lazy
 from .serializers import BoardSerializer
-from .models import Board
+from .models import Topic, Board, AttachFile
 from rest_framework import viewsets
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -20,12 +20,29 @@ def index(request):
     )
 
 
+
+def imageUpload(request):
+    if request.method == 'POST':
+        form = FileUploadForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            attachFileInstance = form.save()
+
+            fileId= attachFileInstance.pk
+            fileName = attachFileInstance.file
+
+            data = {'file_id': fileId, 'file_path': str(fileName)}
+
+        return JsonResponse(data)
+
 class CustomLoginView(LoginView):
     template_name = "login.html"
     redirect_authenticated_user = True
 
     def get_success_url(self):
         return self.request.GET.get("next", reverse_lazy("/"))
+
 
 
 class CustomLoginView(auth_view.LoginView):
