@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import Topic, Board
 from django.contrib.auth import views as auth_view
-from .forms import CustomAuthenticationForm
+from django.http import JsonResponse
+from .models import Topic, Board, AttachFile
+from .forms import CustomAuthenticationForm, FileUploadForm
+
+
 
 
 # Create your views here.
@@ -12,6 +15,22 @@ def index(request):
     return render(
         request, "index.html", {"topics": topics, "most_view_post": most_view_post, "posts": posts}
     )
+
+
+def imageUpload(request):
+    if request.method == 'POST':
+        form = FileUploadForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            attachFileInstance = form.save()
+
+            fileId= attachFileInstance.pk
+            fileName = attachFileInstance.file
+
+            data = {'file_id': fileId, 'file_path': str(fileName)}
+
+        return JsonResponse(data)
 
 
 class CustomLoginView(auth_view.LoginView):
