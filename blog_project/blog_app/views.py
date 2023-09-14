@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import Topic, Board
 from django.contrib.auth import views as auth_view
 from .forms import CustomAuthenticationForm
+from .serializers import BoardSerializer
+from .models import Board
+from rest_framework import viewsets
 
 
 # Create your views here.
@@ -16,6 +19,11 @@ def index(request):
 
 class CustomLoginView(auth_view.LoginView):
     form_class = CustomAuthenticationForm
+
+class BoardViewset(viewsets.ModelViewSet):
+    queryset = Board.objects.all()
+    serializer_class = BoardSerializer
+
 
 
 # def login(request):
