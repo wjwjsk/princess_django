@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import views as auth_view
-from .forms import CustomAuthenticationForm
-from .forms import BlogPostForm
 from django.contrib.auth.views import LoginView
-from .forms import CustomAuthenticationForm, FileUploadForm
+from .forms import CustomAuthenticationForm, FileUploadForm, PostWriteForm
 from django.urls import reverse_lazy
 from .serializers import BoardSerializer
 from .models import Topic, Board, AttachFile
@@ -45,17 +43,12 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return self.request.GET.get("next", reverse_lazy("/"))
 
-
-
 class CustomLoginView(auth_view.LoginView):
     form_class = CustomAuthenticationForm
-
 
 class BoardViewset(viewsets.ModelViewSet):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
-    
-
 
 # def login(request):
 #     if request.method == "GET":
@@ -68,7 +61,6 @@ class BoardViewset(viewsets.ModelViewSet):
 
 #     # 목록
 
-
 def post(request):
     topic = request.GET["topic"]
 
@@ -80,17 +72,17 @@ def post(request):
 
     # 상세
 
-
 def postDtl(request, board_id):
-    post = Board.objects.get(id=board_id)
-    pnum = post.id
-    return render(request, "postDtl.html", {"pnum": pnum})
-
+    board = Board.objects.get(pk=board_id)
+    return render(request, 'post.html', {'board': board})
 
 def post_write(request):
     if request.method == "POST":
-        # 글쓰기
-        # code...
+        form = PostWriteForm(request.POST)
+        if(form.is_valid()):
+            board = form.save()
+            return redirect('/post/'+str(board.pk))
+        print(form.errors)
         return render(request, "post_write.html")
     elif request.method == "PUT":
         # 글 수정

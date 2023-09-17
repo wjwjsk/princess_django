@@ -9,7 +9,8 @@
 {% block javascript %}
 <script src="https://cdn.tiny.cloud/1/cig4n9ujjp5wqsgk6jqk8pcfi03mazpxf0hb3h3tz9129744/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-
+    let uploadForm = document.querySelector("#uploadform")
+    let fileInput =  document.querySelector("#image_input")
     tinymce.init({
         selector: '#content',
         images_upload_url: "{% url 'imageUpload' %}",
@@ -28,13 +29,45 @@
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+          console.log(data);
         tinyMCE.activeEditor.insertContent(`<img src="/media/${data.file_path}"/>`);
+        uploadForm.append(createDom('input',{ 'type':'hidden','name':'file_id','value':data.file_id}));
+        fileInput.value = '';
       })
       .catch(error => {
         console.error('Error:', error)
       });
     });
+
+
+    const createDom = (tag,option) => {
+        const element = document.createElement('input')
+        for (const [key, value] of Object.entries(option)) {
+            element.setAttribute(key,value);
+        }
+        return element
+    }
+
+
+
+    const submitBtns = document.querySelectorAll('.post-submit-container > div')
+
+    for(const dom of submitBtns){
+        dom.addEventListener('click',function (){
+            const useflag = this.getAttribute('data-flag');
+            postform.use_yn.value = useflag;
+            postform.method = 'post'
+            postform.submit();
+        })
+    }
+
+
+
+
+
+    {#temp-btn#}
+    {#save-btn#}
+
 
 </script>
 {% endblock %}
@@ -45,8 +78,10 @@
     <input type="file" id="image_input"/>
 </form>
 
-<form method="post" id="uploadform" action="{% url 'post_write' %}">
+<form id="postform" action="{% url 'post_write' %}">
     {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="use_yn" value="">
     <div class="post-content-container">
         <div class="post-title-container">
             <input type="text" name="title" value="" placeholder="타이틀">
@@ -98,11 +133,11 @@
             </div>
 
             <div class="post-submit-container">
-                <div class="temp-btn">
+                <div class="temp-btn" data-flag="0">
                     <p>임시저장</p>
                 </div>
 
-                <div class="save-btn">
+                <div class="save-btn" data-flag="1">
                     <p>글자성</p>
                 </div>
             </div>
