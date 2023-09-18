@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static '/css/styles.css' %}"> 
-    <link href="https://fonts.cdnfonts.com/css/quicksilver" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
     <title>PrincessBLOG</title>
 </head>
 
@@ -18,14 +19,14 @@
                 <div class="most-view-post-description">
                     <a href="{% url 'post' %}/{{most_view_post.board_id}}">
                         <h3>{{ most_view_post.title }}</h3>
-                        <p>{{ most_view_post.content }}</p>
+                        <p>{{ most_view_post.content|remove_html_tags }}</p>
                     </a>
                     <button><a href="{% url 'post' %}/{{most_view_post.board_id}}">Read More</a></button>
                 </div>
                 <div class="post-image">
                     <a href="{% url 'post' %}/{{most_view_post.board_id}}">
-                        <img src="{% static '/img/abc.png' %}">
-                        {% comment %} <img src="{{ most_view_post.image }}" alt="image"> {% endcomment %}
+                        {% comment %} <img src="{% static '/img/abc.png' %}"> {% endcomment %}
+                        <img src="{{ most_view_post.content|extract_first_image_tag }}" alt="image">
                     </a>
                 </div>
             </div>
@@ -37,13 +38,13 @@
                         <div class="card">
                             <a href="{% url 'post' %}/{{post.board_id}}">
                                 <div class="card-thumbnail-img">
-                                    <img src="{% static '/img/abc.png' %}">
-                                    {% comment %} <img src="{{ post.image }}" alt="image"> {% endcomment %}
+                                    {% comment %} <img src="{% static '/img/abc.png' %}"> {% endcomment %}
+                                    <img src="{{ post.content|extract_first_image_tag }}" alt="image">
                                 </div>
                                 <div class="card-info-box">
-                                    <p id="postlist-date"> {{post.write_date|date:'Y-m-d H:i:s'}}</p>
+                                    <p id="postlist-date"> {{post.write_date|date:"Y년 m월 d일 H:i"}}</p>
                                     <h3 id="postlist-title">{{post.title}}</h3>
-                                    <p id="postlist-content">{{post.content}}</p>
+                                    <p id="postlist-content">{{post.content|remove_html_tags}}</p>
                                 </div>
                             </a>
                         </div>
@@ -51,13 +52,13 @@
                         <div class="card">
                             <a href="{% url 'post' %}/{{post.board_id}}">
                                 <div class="card-thumbnail-img">
-                                    <img src="{% static '/img/abc.png' %}">
-                                    {% comment %} <img src="{{ post.image }}" alt="image"> {% endcomment %}
+                                    {% comment %} <img src="{% static '/img/abc.png' %}"> {% endcomment %}
+                                    <img src="{{ post.content|extract_first_image_tag }}" alt="image">
                                 </div>
                                 <div class="card-info-box">
-                                    <p id="postlist-date"> {{post.write_date|date:'Y-m-d H:i:s'}}</p>
+                                    <p id="postlist-date"> {{post.write_date|date:"Y년 m월 d일 H:i"}}</p>
                                     <h3 id="postlist-title">{{post.title}}</h3>
-                                    <p id="postlist-content">{{post.content}}</p>
+                                    <p id="postlist-content">{{post.content|remove_html_tags}}</p>
                                 </div>
                             </a>
                         </div>
@@ -66,7 +67,11 @@
             </div>
         </div>
     </div>
-    {% include 'footer.html'%}
+    <div class="footer">
+        <div class="container">
+            <p>Copyright 2023</p>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -3,3 +3,4 @@ django_env
 config.json
 migrations
 .idea/
+media
