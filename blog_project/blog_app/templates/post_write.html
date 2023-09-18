@@ -56,10 +56,74 @@
         dom.addEventListener('click',function (){
             const useflag = this.getAttribute('data-flag');
             postform.use_yn.value = useflag;
-            postform.method = 'post'
-            postform.submit();
+
+             fetch("{% url 'post_write' %}", {
+                method: '{% if board %}PUT{% else %}POST{% endif %}',
+                body: formToJson('#postform'),
+                headers: {
+                    'X-CSRFToken': "{{ csrf_token }}"
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                return Promise.reject(response);
+            })
+            .then(data => {
+               alert(data.message);
+               window.location.href = `{% url 'post' %}/${data.board_id}`;
+            })
+            .catch((response) => {
+                response.json().then((json) => {
+                    alert(json.message);
+                });
+            });
+
         })
     }
+
+
+    const aiBtn = document.querySelector('.post-ai-container')
+
+    aiBtn.onclick = () => {
+         const title = postform.title;
+
+         fetch("{% url 'imageUpload' %}", {
+            method: 'POST',
+            body: {'title':title},
+            headers: {
+                'X-CSRFToken': "{{ csrf_token }}"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            tinyMCE.activeEditor.insertContent(`<img src="/media/${data.file_path}"/>`);
+            uploadForm.append(createDom('input',{ 'type':'hidden','name':'file_id','value':data.file_id}));
+            fileInput.value = '';
+        })
+        .catch(error => {
+            console.error('Error:', error)
+        });
+
+    }
+
+
+
+    function formToJson(seleter) {
+        const form = document.querySelector(seleter);
+        const formData = new FormData(form);
+        const formObject = {};
+
+        formData.forEach((value, key) => {
+            formObject[key] = value;
+        });
+        formObject.content = tinymce.activeEditor.getContent();
+        const jsonData = JSON.stringify(formObject);
+
+        return jsonData;
+    }
+
 
 
 
@@ -78,18 +142,21 @@
     <input type="file" id="image_input"/>
 </form>
 
-<form id="postform" action="{% url 'post_write' %}">
+<form id="postform">
     {% csrf_token %}
     {{ form.as_p }}
+    {% if board %}
+    <input type="hidden" name="board_id" value="{{ board.board_id }}">
+    {% endif %}
     <input type="hidden" name="use_yn" value="">
     <div class="post-content-container">
         <div class="post-title-container">
-            <input type="text" name="title" value="" placeholder="타이틀">
+            <input type="text" name="title" value="{{ board.title }}" placeholder="타이틀">
         </div>
 
         <div class="post-edit-container">
            <textarea id="content" name="content">
-
+            {{ board.content }}
            </textarea>
         </div>
     </div>
@@ -102,26 +169,17 @@
 
         <div class="post-topic-container">
             <p>TOPIC</p>
-            <div class="post-topic-item">
-                <input type="radio" id="topic_0" name="topic" value="0">
-                <label for="topic_0">일상</label>
-            </div>
-            <div class="post-topic-item">
-                <input type="radio" id="topic_1" name="topic" value="1">
-                <label for="topic_1">요리</label>
-            </div>
-            <div class="post-topic-item">
-                <input type="radio" id="topic_2" name="topic" value="2">
-                <label for="topic_2">여행</label>
-            </div>
-            <div class="post-topic-item">
-                <input type="radio" id="topic_3" name="topic" value="3">
-                <label for="topic_3">영화</label>
-            </div>
-            <div class="post-topic-item">
-                <input type="radio" id="topic_4" name="topic" value="4">
-                <label for="topic_4">IT / 전자기기</label>
-            </div>
+            {% for topic in topics %}
+                <div class="post-topic-item">
+                    <input type="radio" id="topic_{{ topic.topic_id }}" name="topic"
+                           value="{{ topic.topic_id }}"
+                           {% if topic.topic_id == board.topic.topic_id %}
+                            checked
+                           {% endif %}
+                    >
+                    <label for="topic_{{ topic.topic_id }}">{{ topic.name }}</label>
+                </div>
+            {% endfor %}
         </div>
 
 
