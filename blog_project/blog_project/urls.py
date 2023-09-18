@@ -38,3 +38,6 @@ urlpatterns = [
     path('', include('blog_app.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
+
+admin.site.site_header = "django_princess_blog"
+admin.site.index_title = "blog_user_manager"
