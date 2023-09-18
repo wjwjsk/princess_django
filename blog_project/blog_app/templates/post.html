@@ -1,14 +1,14 @@
 {% load static %}
-
+{% load custom_filters %}
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>{{ post.title }}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/nav_bar_light.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar_light.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}" />
+    <link href="http://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
 </head>
 
 <body>
@@ -18,10 +18,10 @@
             {% comment %} 본문영역 {% endcomment %}
             <div class="big-box">
                 <div class="post-info">
-                    <h5>{{ post.created_at }} | {{ post.views }} 조회</h5>
+                    <h5>{{ post.write_date|date:"Y년 m월 d일 H:i" }} | {{ post.viewcount }} 조회</h5>
                     <h1>{{ post.title }}</h1>
-                    <h5>by {{ post.author_id }}</h5>
-                    <h5 class="topic-box">{{ post.topic }}</h5>
+                    <h5>by admin</h5>
+                    <h5 class="topic-box">{{ post.topic.name }}</h5>
                 </div>
                 <div class="post-content">{{ post.content | safe }}</div>
             </div>
@@ -29,66 +29,94 @@
             <div class="small-box">
                 <div>
                     <h3>Other posts</br>you may like</h3>
-                    {% for recommended_post in recommended_posts %}
-                    <div class="recommend-box">
-                        <a href="{% url 'imageUpload' recommended_post.id %}">
-                            {{ recommended_post.image_tag|safe }}
-                            {{ recommended_post.title }}</a>
-
-                    </div>
+                    {% for post in recent_posts reversed %}
+                        {% if forloop.counter <= 4 %}
+                            <div class="recommend-box">
+                                <a href="{% url 'postDtl' post.board_id %}">
+                                    <img src="{{ post.content|extract_first_image_tag }}" alt="image">
+                                    <a href="{% url 'postDtl' post.board_id %}">{{ post.title }}</a>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
         </div>
         <div class="button-box">
             {% if user.is_authenticated %}
-            <div class="box-divider" style="gap:10px">
-                {% comment %} 수정버튼 {% endcomment %}
-                <a href="{% url 'blog_app:create_or_update_post' post.id %}">
-                    <button class="edit-button">수정하기</button>
-                </a>
-                {% comment %} 삭제버튼 {% endcomment %}
-                <form method="POST" action="{% url 'imageUpload' post.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="delete-button" value="true">
-                    <button type="submit" class="delete-button">삭제하기</button>
-                </form>
-            </div>
+                <div class="box-divider" style="gap:10px">
+                    {% comment %} 수정버튼 {% endcomment %}
+                    {% comment %} <a href="{% url 'blog_app:create_or_update_post' post.id %}"> {% endcomment %}
+                        <button class="edit-button">수정하기</button>
+                    </a>
+                    {% comment %} 삭제버튼 {% endcomment %}
+                    <button type="submit" class="delete-button" id="delete-button1">삭제하기</button>
+                    
+                
+                    <div id="deleteModal" class="modal">
+                        <div class="modal-content">
+                          <h2>게시글 삭제 확인</h2>
+                          <p>정말로 이 게시글을 삭제하시겠습니까?</p>
+                          <div class="modal-buttons">
+                            <form method="POST" action="{% url 'postDtl' post.board_id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="delete-button" id="delete-button" value="true">
+                                <button id="delete-button" class="btn">삭제</button>
+                            </form>
+                            <button id="deleteCancelBtn" class="btn">취소</button>
+                          </div>
+                        </div>
+                      </div>
+                      <script>
+                        // 삭제 버튼 클릭 시 모달 대화상자를 보여줍니다.
+                        document.getElementById('delete-button1').addEventListener('click', function(event) {
+                            event.preventDefault(); // 폼 제출을 막습니다.
+                            document.getElementById('deleteModal').style.display = 'block';
+                          });
+                        // 취소 버튼 클릭 시 모달 대화상자를 닫습니다.
+                        document.getElementById('deleteCancelBtn').addEventListener('click', function(event) {
+                          document.getElementById('deleteModal').style.display = 'none';
+                        });
+                        </script>
+                </div>
             {% endif %}
             {% comment %} 공유버튼 {% endcomment %}
             <button class="share-button">공유하기</button>
         </div>
 
         {% if next_post %}
-        <div class="another-post-box">
-            <div class="post-box">
-                <div>다음글</div>
-                <div class="post-name">
-                    <a href="{% url 'imageUpload' next_post.id %}">{{ next_post.title }}</a>
+            <div class="another-post-box">
+                <div class="post-box">
+                    <div>다음글</div>
+                    <div class="post-name">
+                        <a href="{% url 'postDtl' next_post.board_id %}">{{ next_post.title }}</a>
+                    </div>
                 </div>
+                <p>{{ next_post.write_date|date:"Y년 m월 d일 H:i" }}</p>
             </div>
-            <p>{{ next_post.created_at }}</p>
-        </div>
         {% else %}
         <div class="another-post-box"></div>
         {% endif %}
 
 
         {% if previous_post %}
-        <div class="another-post-box">
+        <div class="another-post-box1">
             <div class="post-box">
                 <div>이전글</div>
                 <div class="post-name">
-                    <a href="{% url 'imageUpload' previous_post.id %}">{{ previous_post.title }}</a>
+                    <a href="{% url 'postDtl' previous_post.board_id %}">{{ previous_post.title }}</a>
                 </div>
             </div>
-            <p>{{ previous_post.created_at }}</p>
+            <p>{{ previous_post.write_date|date:"Y년 m월 d일 H:i" }}</p>
         </div>
         {% else %}
         <div class="another-post-box"></div>
         {% endif %}
     </div>
-    {% include 'footer.html'%}
+    <div class="footer">
+        <div class="container">
+            <p>Copyright 2023</p>
+        </div>
+    </div>
 </body>
 <script>
     document.querySelector('.share-button').addEventListener('click', function () {

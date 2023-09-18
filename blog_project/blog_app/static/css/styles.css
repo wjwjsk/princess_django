@@ -1,3 +1,6 @@
+*{
+    font-family: 'Noto Sans KR', sans-serif;
+}
 body{
     margin: 0;
     overflow-x: hidden;
@@ -14,7 +17,6 @@ body{
     position: fixed;
     top: 0;
     text-decoration: none;
-    font-family: 'Pretendard', sans-serif;
 }
 
 .navbar-menu {
@@ -163,6 +165,7 @@ button:hover{
     width: 40%;
     line-height: 2;
   }
+
   
   .most-view-post button{
       background-color: #3a3a3a;
@@ -236,6 +239,7 @@ button:hover{
   height: 160px;
   color: #1e1e1e;
   font-family: 'Pretendard', sans-serif;
+  padding: 5px
 }
 
 
@@ -247,6 +251,7 @@ h3 {
 .card-info-box h3{
     font-size: 20px;
     font-weight: 700;
+    margin-top: 5px;
 }
 
 .card-info-box p {
@@ -314,5 +319,29 @@ a {
 }
 
 span{
+    font-weight: bold;
+}
+
+
+.footer {
+    width: 100%;
+    background-color: #e7e3da;
+    height: 200px;
+    display: flex;
+    justify-content: end;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.footer .container {
+    align-items: self-end;
+    display: flex;
+}
+
+.footer .container p {
+    color: #1e1e1e;
+    justify-content: end;
+}
+
+span {
     font-weight: bold;
 }
