@@ -9,6 +9,8 @@ from .models import Topic, Board, AttachFile
 from rest_framework import viewsets
 from django.http import JsonResponse
 import datetime
+import json
+
 
 
 # Create your views here.
@@ -139,17 +141,43 @@ def post_write(request):
         print(form.errors)
         return render(request, "post_write.html")
     elif request.method == "PUT":
-        # 글 수정
-        # code...
-        return render(request, "post_write.html")
+        form = PostWriteForm(json.loads(request.body))
+        print(request.body)
+        body = json.loads(request.body)
+
+        if (form.is_valid() == False):
+            return JsonResponse({'message': '유효한 겂을 입력해주세요'}, status=400)
+
+        board_id = body['board_id']
+        updated_board = form.update_board(board_id)
+
+        if updated_board == False:
+            return JsonResponse({'message': '유효한 겂을 입력해주세요'}, status=400)
+
+        return JsonResponse({'message': '게시글 업데이트 성공','board_id': str(board_id)}, status=200)
     elif request.method == "DELETE":
-        # 글 삭제
-        # code...
 
         return redirect("/")
 
     else:
-        return render(request, "post_write.html")
+        parameter = {}
+        topics = Topic.objects.all()
+        parameter['topics'] = topics
+        board_id = request.GET.get('board_id')
+        if(board_id != None):
+            board = Board.objects.get(pk=board_id)
+            print(board)
+            parameter['board'] = board
+        return render(request, 'post_write.html',parameter)
+
+
+# def chatAi(request):
+#     if request.method == "POST":
+#         # request.[]
+#         # data = {'file_id': fileId, 'file_path': str(fileName)}
+#
+#         return JsonResponse(data)
+
 
 
 def post_list(request, topic=None):

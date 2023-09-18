@@ -30,6 +30,9 @@ class Topic(models.Model):
     name = models.CharField(max_length=30)
     use_yn = models.BooleanField(blank=True, default=True)
 
+    def get_all_topics():
+        return Topic.objects.all()
+
     class Meta:
         db_table = "topic"
 
@@ -44,6 +47,20 @@ class Board(models.Model):
     modif_date = models.DateTimeField(default=timezone.now)
     viewcount = models.IntegerField(default=0)
     topic = models.ForeignKey(Topic, on_delete=models.DO_NOTHING, null=True)
+
+
+    def update_board(_board):
+        board = Board.objects.get(pk=board_id)
+        if board:
+            board.title = _board.title
+            board.content = _board.content
+            board.topic_id = _board.topic
+            board.use_yn = _board.use_yn
+            board.topic = _board.topic
+            board.save()
+            return True
+        return False
+
 
     # def save(self, *args, **kwargs):
     #     current_datetime = timezone.now()

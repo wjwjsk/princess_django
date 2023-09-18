@@ -24,11 +24,9 @@
 
             <div>
                 <ul class="navbar-main-menu">
-                    <li><a href="#">일상</a></li>
-                    <li><a href="#">요리</a></li>
-                    <li><a href="#">여행</a></li>
-                    <li><a href="#">영화</a></li>
-                    <li><a href="#">IT</a></li>
+                    {% for topic in topics %}
+                        <li><a href="/post/{{ topic.topic_id }}">{{ topic.name }}</a></li>
+                    {% endfor %}
                 </ul>
 
                 <div class="navbar-actions-container">

@@ -13,8 +13,23 @@ class PostWriteForm(forms.ModelForm):
     class Meta:
         model = Board
         fields = ['title', 'content','topic', 'use_yn']
-
     topic = forms.ModelChoiceField(queryset=Topic.objects.all())
+
+    def update_board(self, board_id):
+        # 폼에서 전달된 데이터로 게시글 업데이트
+        title = self.cleaned_data['title']
+        content = self.cleaned_data['content']
+        topic = self.cleaned_data['topic']
+
+        try:
+            board = Board.objects.get(board_id=board_id)
+            board.title = title
+            board.content = content
+            board.topic = topic
+            board.save()
+            return board  # 업데이트된 게시글 객체 반환
+        except Board.DoesNotExist:
+            return None  # 게시글을 찾을 수 없을 때 None 반환
 
 
 
