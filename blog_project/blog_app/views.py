@@ -10,7 +10,7 @@ from rest_framework import viewsets
 from django.http import JsonResponse
 import datetime
 import json
-
+import openai
 
 
 # Create your views here.
@@ -133,13 +133,14 @@ def postDtl(request, board_id):
 
 def post_write(request):
     if request.method == "POST":
-        form = PostWriteForm(request.POST)
-        if form.is_valid():
-            board = form.save()
-            return redirect("/")
-            # return redirect('/post/'+str(board.pk))
-        print(form.errors)
-        return render(request, "post_write.html")
+        form = PostWriteForm(json.loads(request.body))
+        if form.is_valid() == False:
+            print(form.errors)
+            return JsonResponse({'message': '유효한 겂을 입력해주세요'}, status=400)
+        board =form.save();
+        if board == False:
+            return JsonResponse({'message': '글작성에 실패 했습니다'}, status=400)
+        return JsonResponse({'message': '게시글 쓰기가 성공했습니다', 'board_id': str(board.pk)}, status=200)
     elif request.method == "PUT":
         form = PostWriteForm(json.loads(request.body))
         print(request.body)
@@ -171,12 +172,24 @@ def post_write(request):
         return render(request, 'post_write.html',parameter)
 
 
-# def chatAi(request):
-#     if request.method == "POST":
-#         # request.[]
-#         # data = {'file_id': fileId, 'file_path': str(fileName)}
-#
-#         return JsonResponse(data)
+def chatAi(request):
+    if request.method == "POST":
+        openai.api_key = ""
+        prompt = '질문을 해보자'
+        try:
+            openai.organization = "org-N6PEQBZRURMASfipxTIHBYw7"
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": prompt},
+                ],
+            )
+            # 반환된 응답에서 텍스트 추출해 변수에 저장
+            message = response['choices'][0]['message']['content']
+        except Exception as e:
+            message = str(e)
+        return JsonResponse({"message": message})
+    return JsonResponse({"message": "11"})
 
 
 

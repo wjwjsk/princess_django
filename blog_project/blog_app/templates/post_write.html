@@ -88,8 +88,7 @@
 
     aiBtn.onclick = () => {
          const title = postform.title;
-
-         fetch("{% url 'imageUpload' %}", {
+         fetch("{% url 'chatAi' %}", {
             method: 'POST',
             body: {'title':title},
             headers: {
