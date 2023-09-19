@@ -1,102 +1,119 @@
-{% extends "post_base.html" %}
 
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/navbar_light.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/post_white.css' %}">
-{% endblock %}
+    <link href="http://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
+    <title>PrincessBLOG-글쓰기</title>
+</head>
 
-{% block javascript %}
+<body>
+    {% include 'navbar.html'%}
+    {% if messages %}
+        {% for message in messages %}
+            {% if forloop.first %}
+                <ul class="messages">
+                    <li>{{ message|linebreaksbr }}</li>
+                </ul>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div class="content-container">
+        <div class="main-container">
+        <form method="post" id="uploadform" enctype="multipart/form-data">  
+            <input type="file" id="image_input"/>
+        </form>
+
+        <form id="postform">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if board %}
+            <input type="hidden" name="board_id" value="{{ board.board_id }}">
+            {% endif %}
+            <input type="hidden" name="use_yn" value="">
+            <div class="post-content-container">
+                <div class="post-title-container">
+                    <input type="text" name="title" value="{{ board.title }}" placeholder="타이틀">
+                </div>
+
+                <div class="post-edit-container">
+                <textarea id="content" name="content">
+                    {{ board.content }}
+                </textarea>
+                </div>
+            </div>
+
+            <div class="post-controller-container">
+                <div class="post-ai-container">
+                    <img src="{% static 'img/ai_icon.svg' %}" alt="logo">
+                    <p>AI 글 자동완성</p>
+                </div>
+
+                <div class="post-topic-container">
+                    <p>TOPIC</p>
+                    {% for topic in topics %}
+                        <div class="post-topic-item">
+                            <input type="radio" id="topic_{{ topic.topic_id }}" name="topic"
+                                value="{{ topic.topic_id }}"
+                                {% if topic.topic_id == board.topic.topic_id %}
+                                    checked
+                                {% endif %}
+                            >
+                            <label for="topic_{{ topic.topic_id }}">{{ topic.name }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+                <div class="post-upload-container">
+                    <div class="post-info-container" >
+                        <p>UPLOAD INFO</p>
+                        <p>상태 : 미게시</p>
+                        <p><label id="file-label" for="image_input">이미지 업로드</label></p>
+                    </div>
+
+                    <div class="post-submit-container">
+                        <div class="temp-btn" data-flag="0">
+                            <p>임시저장</p>
+                        </div>
+
+                        <div class="save-btn" data-flag="1">
+                            <p>글작성</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <script src="https://cdn.tiny.cloud/1/cig4n9ujjp5wqsgk6jqk8pcfi03mazpxf0hb3h3tz9129744/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
     let uploadForm = document.querySelector("#uploadform")
-    let fileInput =  document.querySelector("#image_input")
-    tinymce.init({
-        selector: '#content',
-        images_upload_url: "{% url 'imageUpload' %}",
-    });
+        let fileInput =  document.querySelector("#image_input")
+        tinymce.init({
+            selector: '#content',
+            images_upload_url: "{% url 'imageUpload' %}",
+        });
 
-    document.querySelector("#image_input").addEventListener('change', function() {
-      let formData = new FormData();
-      formData.append('file', this.files[0]);
+        document.querySelector("#image_input").addEventListener('change', function() {
+        let formData = new FormData();
+        formData.append('file', this.files[0]);
 
-      fetch("{% url 'imageUpload' %}", {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'X-CSRFToken': "{{ csrf_token }}"
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-          console.log(data);
-        tinyMCE.activeEditor.insertContent(`<img src="/media/${data.file_path}"/>`);
-        uploadForm.append(createDom('input',{ 'type':'hidden','name':'file_id','value':data.file_id}));
-        fileInput.value = '';
-      })
-      .catch(error => {
-        console.error('Error:', error)
-      });
-    });
-
-
-    const createDom = (tag,option) => {
-        const element = document.createElement('input')
-        for (const [key, value] of Object.entries(option)) {
-            element.setAttribute(key,value);
-        }
-        return element
-    }
-
-
-
-    const submitBtns = document.querySelectorAll('.post-submit-container > div')
-
-    for(const dom of submitBtns){
-        dom.addEventListener('click',function (){
-            const useflag = this.getAttribute('data-flag');
-            postform.use_yn.value = useflag;
-
-             fetch("{% url 'post_write' %}", {
-                method: '{% if board %}PUT{% else %}POST{% endif %}',
-                body: formToJson('#postform'),
-                headers: {
-                    'X-CSRFToken': "{{ csrf_token }}"
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                return Promise.reject(response);
-            })
-            .then(data => {
-               alert(data.message);
-               window.location.href = `{% url 'post' %}/${data.board_id}`;
-            })
-            .catch((response) => {
-                response.json().then((json) => {
-                    alert(json.message);
-                });
-            });
-
-        })
-    }
-
-
-    const aiBtn = document.querySelector('.post-ai-container')
-
-    aiBtn.onclick = () => {
-         const title = postform.title;
-         fetch("{% url 'chatAi' %}", {
+        fetch("{% url 'imageUpload' %}", {
             method: 'POST',
-            body: {'title':title},
+            body: formData,
             headers: {
-                'X-CSRFToken': "{{ csrf_token }}"
+            'X-CSRFToken': "{{ csrf_token }}"
             }
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             tinyMCE.activeEditor.insertContent(`<img src="/media/${data.file_path}"/>`);
             uploadForm.append(createDom('input',{ 'type':'hidden','name':'file_id','value':data.file_id}));
             fileInput.value = '';
@@ -104,101 +121,77 @@
         .catch(error => {
             console.error('Error:', error)
         });
-
-    }
-
-
-
-    function formToJson(seleter) {
-        const form = document.querySelector(seleter);
-        const formData = new FormData(form);
-        const formObject = {};
-
-        formData.forEach((value, key) => {
-            formObject[key] = value;
         });
-        formObject.content = tinymce.activeEditor.getContent();
-        const jsonData = JSON.stringify(formObject);
-
-        return jsonData;
-    }
 
 
+        const createDom = (tag,option) => {
+            const element = document.createElement('input')
+            for (const [key, value] of Object.entries(option)) {
+                element.setAttribute(key,value);
+            }
+            return element
+        }
 
 
 
+        const submitBtns = document.querySelectorAll('.post-submit-container > div')
 
-    {#temp-btn#}
-    {#save-btn#}
+        for(const dom of submitBtns){
+            dom.addEventListener('click',function (){
+                const useflag = this.getAttribute('data-flag');
+                postform.use_yn.value = useflag;
+                postform.method = 'post'
+                postform.submit();
+            })
+        }   
 
 
+        const aiBtn = document.querySelector('.post-ai-container')
+
+        aiBtn.onclick = () => {
+            const title = postform.title;
+
+            fetch("{% url 'imageUpload' %}", {
+                method: 'POST',
+                body: {'title':title},
+                headers: {
+                    'X-CSRFToken': "{{ csrf_token }}"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                tinyMCE.activeEditor.insertContent(`<img src="/media/${data.file_path}"/>`);
+                uploadForm.append(createDom('input',{ 'type':'hidden','name':'file_id','value':data.file_id}));
+                fileInput.value = '';
+            })
+            .catch(error => {
+                console.error('Error:', error)
+            });
+
+        }
+
+
+
+        function formToJson(seleter) {
+            const form = document.querySelector(seleter);
+            const formData = new FormData(form);
+            const formObject = {};
+
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+            formObject.content = tinymce.activeEditor.getContent();
+            const jsonData = JSON.stringify(formObject);
+
+            return jsonData;
+        }
 </script>
-{% endblock %}
 
-{% block content %}
-
-<form method="post" id="uploadform" enctype="multipart/form-data">
-    <input type="file" id="image_input"/>
-</form>
-
-<form id="postform">
-    {% csrf_token %}
-    {{ form.as_p }}
-    {% if board %}
-    <input type="hidden" name="board_id" value="{{ board.board_id }}">
-    {% endif %}
-    <input type="hidden" name="use_yn" value="">
-    <div class="post-content-container">
-        <div class="post-title-container">
-            <input type="text" name="title" value="{{ board.title }}" placeholder="타이틀">
-        </div>
-
-        <div class="post-edit-container">
-           <textarea id="content" name="content">
-            {{ board.content }}
-           </textarea>
-        </div>
+<div class="footer">
+    <div class="container">
+        <p>Copyright 2023</p>
     </div>
+</div>
+</body>
 
-    <div class="post-controller-container">
-        <div class="post-ai-container">
-            <img src="{% static 'img/ai_icon.svg' %}" alt="logo">
-            <p>AI 글 자동완성</p>
-        </div>
-
-        <div class="post-topic-container">
-            <p>TOPIC</p>
-            {% for topic in topics %}
-                <div class="post-topic-item">
-                    <input type="radio" id="topic_{{ topic.topic_id }}" name="topic"
-                           value="{{ topic.topic_id }}"
-                           {% if topic.topic_id == board.topic.topic_id %}
-                            checked
-                           {% endif %}
-                    >
-                    <label for="topic_{{ topic.topic_id }}">{{ topic.name }}</label>
-                </div>
-            {% endfor %}
-        </div>
-
-
-        <div class="post-upload-container">
-            <div class="post-info-container" >
-                <p>UPLOAD INFO</p>
-                <p>상태 : 미게시</p>
-                <p><label id="file-label" for="image_input">이미지 업로드</label></p>
-            </div>
-
-            <div class="post-submit-container">
-                <div class="temp-btn" data-flag="0">
-                    <p>임시저장</p>
-                </div>
-
-                <div class="save-btn" data-flag="1">
-                    <p>글자성</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-{% endblock %}
+</html>

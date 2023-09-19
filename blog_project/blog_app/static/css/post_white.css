@@ -1,8 +1,19 @@
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+ }
+
+body{
+    margin: 0;
+}
+
+.messages{
+    margin-top: 100px;
+}
 
 .post-content-container{
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: 0.7;
     padding: 0 20px;
 }
 
@@ -10,14 +21,22 @@
 .post-title-container {
     display: flex;
     height: 41px;
-    padding: 11px 16px;
+    padding: 5px 20px;
     align-items: center;
     gap: 10px;
     border: 1px solid #FFF;
-    background: #FFF;
+    background: whitesmoke;
     margin-bottom: 18px;
+    border-radius: 20px;
 }
 
+#postform{
+    background-color: white;
+    display: flex;
+    padding: 54px 0px;
+    justify-content: center;
+    margin-top: 104px;
+}
 
 
 .post-edit-container {
@@ -35,6 +54,7 @@
 .post-controller-container > div{
     border-radius: 2px;
     border: 1px solid #CAC8C5;
+    height: fit-content;
 }
 
 
@@ -69,6 +89,7 @@
 
 .post-topic-container > p {
     font-size: 16px;
+    margin: 0;
 }
 
 .post-topic-container > div > label {
@@ -77,6 +98,7 @@
 
 .post-upload-container  > div > p:first-child {
     font-size: 16px;
+    margin: 0px 0 10px 0
 }
 .post-upload-container  > div > p {
     font-size: 13px;
@@ -86,7 +108,7 @@
     padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0px;
 }
 
 
@@ -98,7 +120,7 @@
 
 
 .post-submit-container {
-    padding: 50px 10px 10px 10px;
+    padding: 0px 20px 15px 10px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -166,8 +188,9 @@
     display: flex;
     flex: 1;
     text-align: left; 
-    border: 1px solid #FFF;
-    background: #FFF;
+    border: none;
+    outline: none;
+    background: whitesmoke;
     font-family: Pretendard;
     font-size: 16px;
     font-style: normal;

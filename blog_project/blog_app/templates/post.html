@@ -23,7 +23,7 @@
                     <h5>by admin</h5>
                     <h5 class="topic-box">{{ post.topic.name }}</h5>
                 </div>
-                <div class="post-content">{{ post.content | safe }}</div>
+                <div class="post-content">{{ post.content|remove_dotdot| safe  }}</div>
             </div>
             {% comment %} 추천글 영역 {% endcomment %}
             <div class="small-box">
@@ -32,9 +32,9 @@
                     {% for post in recent_posts reversed %}
                         {% if forloop.counter <= 4 %}
                             <div class="recommend-box">
-                                <a href="{% url 'postDtl' post.board_id %}">
-                                    <img src="{{ post.content|extract_first_image_tag }}" alt="image">
-                                    <a href="{% url 'postDtl' post.board_id %}">{{ post.title }}</a>
+                                <a href="{% url 'postDtl' topic=post.topic.name board_id=post.board_id %}">
+                                    <img src="{{ post.content|extract_first_image_tag }}" aalt="이미지 없음" onerror="this.onerror=null;this.src='{% static '/img/x.png' %}'">
+                                    <a href="{% url 'postDtl' topic=post.topic.name board_id=post.board_id %}">{{ post.title }}</a>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -57,7 +57,7 @@
                           <h2>게시글 삭제 확인</h2>
                           <p>정말로 이 게시글을 삭제하시겠습니까?</p>
                           <div class="modal-buttons">
-                            <form method="POST" action="{% url 'postDtl' post.board_id %}">
+                            <form method="POST" action="{% url 'postDtl' topic=post.topic.name board_id=post.board_id %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="delete-button" id="delete-button" value="true">
                                 <button id="delete-button" class="btn">삭제</button>
@@ -88,7 +88,7 @@
                 <div class="post-box">
                     <div>다음글</div>
                     <div class="post-name">
-                        <a href="{% url 'postDtl' next_post.board_id %}">{{ next_post.title }}</a>
+                        <a href="{% url 'postDtl' topic=next_post.topic.name board_id=next_post.board_id %}">{{ next_post.title }}</a>
                     </div>
                 </div>
                 <p>{{ next_post.write_date|date:"Y년 m월 d일 H:i" }}</p>
@@ -103,7 +103,7 @@
             <div class="post-box">
                 <div>이전글</div>
                 <div class="post-name">
-                    <a href="{% url 'postDtl' previous_post.board_id %}">{{ previous_post.title }}</a>
+                    <a href="{% url 'postDtl' topic=previous_post.topic.name board_id=previous_post.board_id %}">{{ previous_post.title }}</a>
                 </div>
             </div>
             <p>{{ previous_post.write_date|date:"Y년 m월 d일 H:i" }}</p>
@@ -128,7 +128,7 @@
         tempInput.select();
         document.execCommand("copy");
         document.body.removeChild(tempInput);
-
+        
         alert('포스트 링크가 클립보드에 복사되었습니다');
     });
 </script>
