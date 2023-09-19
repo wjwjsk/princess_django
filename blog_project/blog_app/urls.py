@@ -20,5 +20,6 @@ urlpatterns = [
     path(r"post/<int:board_id>", views.postDtl, name="postDtl"),
     path(r"post/write", views.post_write, name="post_write"),
     path('post/write/upload', views.imageUpload, name='imageUpload'),
+    path(r'chatAi', views.chatAi, name='chatAi'),
     path(r"api/", include(router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
