@@ -46,7 +46,7 @@ class Board(models.Model):
     write_date = models.DateTimeField(default=timezone.now)
     modif_date = models.DateTimeField(default=timezone.now)
     viewcount = models.IntegerField(default=0)
-    topic = models.ForeignKey(Topic, on_delete=models.DO_NOTHING, null=True)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, null=True)
 
 
     def update_board(_board):

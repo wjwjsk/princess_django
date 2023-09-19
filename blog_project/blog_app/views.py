@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.sessions.models import Session
 from django.contrib.auth import views as auth_view
 from django.contrib.auth.views import LoginView
+from django.contrib import messages
 from .forms import CustomAuthenticationForm, FileUploadForm, PostWriteForm
 from django.urls import reverse_lazy
 from .serializers import BoardSerializer
@@ -10,7 +11,7 @@ from rest_framework import viewsets
 from django.http import JsonResponse
 import datetime
 import json
-
+import openai
 
 
 # Create your views here.
@@ -20,8 +21,17 @@ def index(request):
     if mvp_topic:
         topic = Topic.objects.get(name=mvp_topic)
         most_view_post = Board.objects.filter(topic=topic).order_by("-viewcount").values().first()
+        if most_view_post is not None:
+            topic_id = most_view_post["topic_id"]
+            mtopic = Topic.objects.get(topic_id=topic_id)
+        else:
+            messages.error(request, "해당 토픽에는 게시글이 없습니다. 게시글 작성 후 확인 가능합니다.")
+            return redirect("post_write")
+
     else:
         most_view_post = Board.objects.order_by("-viewcount").values().first()
+        topic_id = most_view_post["topic_id"]
+        mtopic = Topic.objects.get(topic_id=topic_id)
 
     posts = Board.objects.all().order_by("board_id")
     topic = request.GET.get("topic")
@@ -32,6 +42,7 @@ def index(request):
         {
             "topics": topics,
             "most_view_post": most_view_post,
+            "mtopic": mtopic,
             "posts": posts,
             "topic": topic,
             "file": file,
@@ -95,9 +106,10 @@ def post(request):
     # 상세
 
 
-def postDtl(request, board_id):
+def postDtl(request, topic, board_id):
     topics = Topic.objects.all()
     post = Board.objects.get(pk=board_id)
+    topic_link = Topic.objects.get(name=topic)
     previous_post = Board.objects.filter(board_id__lt=board_id).order_by("-board_id").first()
     next_post = Board.objects.filter(board_id__gt=board_id).order_by("board_id").first()
     recent_posts = Board.objects.filter(topic=post.topic).order_by("board_id")
@@ -125,6 +137,7 @@ def postDtl(request, board_id):
             "previous_post": previous_post,
             "next_post": next_post,
             "topics": topics,
+            "topic_link": topic_link,
             "post": post,
             "recent_posts": recent_posts,
         },
@@ -145,39 +158,49 @@ def post_write(request):
         print(request.body)
         body = json.loads(request.body)
 
-        if (form.is_valid() == False):
-            return JsonResponse({'message': '유효한 겂을 입력해주세요'}, status=400)
+        if form.is_valid() == False:
+            return JsonResponse({"message": "유효한 겂을 입력해주세요"}, status=400)
 
-        board_id = body['board_id']
+        board_id = body["board_id"]
         updated_board = form.update_board(board_id)
 
         if updated_board == False:
-            return JsonResponse({'message': '유효한 겂을 입력해주세요'}, status=400)
+            return JsonResponse({"message": "유효한 겂을 입력해주세요"}, status=400)
 
-        return JsonResponse({'message': '게시글 업데이트 성공','board_id': str(board_id)}, status=200)
+        return JsonResponse({"message": "게시글 업데이트 성공", "board_id": str(board_id)}, status=200)
     elif request.method == "DELETE":
-
         return redirect("/")
 
     else:
         parameter = {}
         topics = Topic.objects.all()
-        parameter['topics'] = topics
-        board_id = request.GET.get('board_id')
-        if(board_id != None):
+        parameter["topics"] = topics
+        board_id = request.GET.get("board_id")
+        if board_id != None:
             board = Board.objects.get(pk=board_id)
             print(board)
-            parameter['board'] = board
-        return render(request, 'post_write.html',parameter)
+            parameter["board"] = board
+        return render(request, "post_write.html", parameter)
 
 
-# def chatAi(request):
-#     if request.method == "POST":
-#         # request.[]
-#         # data = {'file_id': fileId, 'file_path': str(fileName)}
-#
-#         return JsonResponse(data)
-
+def chatAi(request):
+    if request.method == "POST":
+        openai.api_key = ""
+        prompt = "질문을 해보자"
+        try:
+            openai.organization = "org-N6PEQBZRURMASfipxTIHBYw7"
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": prompt},
+                ],
+            )
+            # 반환된 응답에서 텍스트 추출해 변수에 저장
+            message = response["choices"][0]["message"]["content"]
+        except Exception as e:
+            message = str(e)
+        return JsonResponse({"message": message})
+    return JsonResponse({"message": "11"})
 
 
 def post_list(request, topic=None):

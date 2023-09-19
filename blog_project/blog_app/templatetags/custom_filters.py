@@ -13,12 +13,23 @@ def remove_html_tags(value):
     result = [re.sub(r"<img[^>]*>", "", item) for item in result]
     return " ".join(result)
 
+
 @register.filter
 def extract_first_image_tag(text):
-    pattern = re.compile(r'<img[^>]*src=["\'](.*?)["\']')
+    pattern = re.compile(r'<img[^>]*src=["\']\.\./(.*?/.*?)["\']')
     matches = pattern.findall(text)
-    
+
     if matches:
-        return matches[0]
-    
+        return "/" + matches[0]
+
     return ""
+
+
+@register.filter
+def remove_dotdot(value):
+    pattern = r'src="(\.\./.+?)"'
+    result = re.findall(pattern, value)
+    for src in result:
+        modified_src = src.replace("..", "")
+        value = value.replace(src, modified_src)
+    return value

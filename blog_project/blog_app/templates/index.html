@@ -17,16 +17,16 @@
         <div class="most-view-post">
             <div class="container">
                 <div class="most-view-post-description">
-                    <a href="{% url 'post' %}/{{most_view_post.board_id}}">
+                    <a href="{% url 'post' %}/{{mtopic.name}}/{{most_view_post.board_id}}">
                         <h3>{{ most_view_post.title }}</h3>
                         <p>{{ most_view_post.content|remove_html_tags }}</p>
                     </a>
-                    <button><a href="{% url 'post' %}/{{most_view_post.board_id}}">Read More</a></button>
+                    <button><a href="{% url 'post' %}/{{mtopic.name}}/{{most_view_post.board_id}}">Read More</a></button>
                 </div>
                 <div class="post-image">
-                    <a href="{% url 'post' %}/{{most_view_post.board_id}}">
+                    <a href="{% url 'post' %}/{{mtopic.name}}/{{most_view_post.board_id}}">
                         {% comment %} <img src="{% static '/img/abc.png' %}"> {% endcomment %}
-                        <img src="{{ most_view_post.content|extract_first_image_tag }}" alt="image">
+                        <img src="{{ most_view_post.content|extract_first_image_tag }}" onerror="this.onerror=null;this.src='{% static '/img/x.png' %}'">
                     </a>
                 </div>
             </div>
@@ -36,10 +36,10 @@
                 {% for post in posts reversed %}
                     {% if post.topic.name == request.GET.topic %}
                         <div class="card">
-                            <a href="{% url 'post' %}/{{post.board_id}}">
+                            <a href="{% url 'post' %}/{{post.topic.name}}/{{post.board_id}}">
                                 <div class="card-thumbnail-img">
                                     {% comment %} <img src="{% static '/img/abc.png' %}"> {% endcomment %}
-                                    <img src="{{ post.content|extract_first_image_tag }}" alt="image">
+                                    <img src="{{ post.content|extract_first_image_tag }}" alt="이미지 없음" onerror="this.onerror=null;this.src='{% static '/img/x.png' %}'">
                                 </div>
                                 <div class="card-info-box">
                                     <p id="postlist-date"> {{post.write_date|date:"Y년 m월 d일 H:i"}}</p>
@@ -50,10 +50,10 @@
                         </div>
                     {% elif not request.GET.topic %}
                         <div class="card">
-                            <a href="{% url 'post' %}/{{post.board_id}}">
+                            <a href="{% url 'post' %}/{{post.topic.name}}/{{post.board_id}}">
                                 <div class="card-thumbnail-img">
                                     {% comment %} <img src="{% static '/img/abc.png' %}"> {% endcomment %}
-                                    <img src="{{ post.content|extract_first_image_tag }}" alt="image">
+                                    <img src="{{ post.content|extract_first_image_tag }}" alt="이미지 없음" onerror="this.onerror=null;this.src='{% static '/img/x.png' %}'">
                                 </div>
                                 <div class="card-info-box">
                                     <p id="postlist-date"> {{post.write_date|date:"Y년 m월 d일 H:i"}}</p>

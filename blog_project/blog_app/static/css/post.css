@@ -50,6 +50,7 @@ h1 {
     font-weight: 700;
     margin-bottom: 10px;
     margin-top: 10px;
+    line-break: anywhere    ;
 }
 
 h3 {
@@ -156,6 +157,14 @@ a {
     font-weight: 700;
     margin-left: 10px;
 }
+.post-name a{
+    width: 700px;
+    display: -webkit-box;
+    line-break: anywhere;
+    -webkit-line-clamp : 1;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+}
 
 .another-post-box p {
     font-size: 14px;
@@ -174,6 +183,7 @@ a {
     font-weight: 700;
     font-size: 18px;
     padding: 5px;
+    line-break: anywhere
 }
 
 .recommend-box {
@@ -212,11 +222,13 @@ a {
 
   .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 20% auto;
     padding: 20px;
     border: 1px solid #888;
+    position: absolute;
     width: 300px;
     text-align: center;
+    left: 40%;
   }
 
   .modal h2 {

@@ -122,6 +122,7 @@ button:hover{
       font-size: 48px;
       font-weight: 700;
       margin: 0;
+      line-break: anywhere;
   }
   
   .most-view-post p{
@@ -252,6 +253,12 @@ h3 {
     font-size: 20px;
     font-weight: 700;
     margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-break: anywhere;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 표시할 줄 수 */
+    -webkit-box-orient: vertical;
 }
 
 .card-info-box p {
@@ -284,7 +291,7 @@ a {
   }
   
   .card-thumbnail-img img {
-    width: 100%;
+    width: 90%;
     height: 100%;
     object-fit: cover;
     position: absolute;

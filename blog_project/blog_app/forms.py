@@ -6,20 +6,21 @@ from .models import AttachFile, Board, Topic
 class FileUploadForm(forms.ModelForm):
     class Meta:
         model = AttachFile
-        fields = ['file']
+        fields = ["file"]
 
 
 class PostWriteForm(forms.ModelForm):
     class Meta:
         model = Board
-        fields = ['title', 'content','topic', 'use_yn']
+        fields = ["title", "content", "topic", "use_yn"]
+
     topic = forms.ModelChoiceField(queryset=Topic.objects.all())
 
     def update_board(self, board_id):
         # 폼에서 전달된 데이터로 게시글 업데이트
-        title = self.cleaned_data['title']
-        content = self.cleaned_data['content']
-        topic = self.cleaned_data['topic']
+        title = self.cleaned_data["title"]
+        content = self.cleaned_data["content"]
+        topic = self.cleaned_data["topic"]
 
         try:
             board = Board.objects.get(board_id=board_id)
@@ -30,10 +31,6 @@ class PostWriteForm(forms.ModelForm):
             return board  # 업데이트된 게시글 객체 반환
         except Board.DoesNotExist:
             return None  # 게시글을 찾을 수 없을 때 None 반환
-
-
-
-
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -47,14 +44,13 @@ class CustomAuthenticationForm(AuthenticationForm):
         self.fields["password"].widget.attrs["placeholder"] = "패스워드"
 
 
-        
 class BlogPostForm(forms.ModelForm):
     class Meta:
         # model = BlogPost
-        exclude = ['created_at']
+        exclude = ["created_at"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['topic'].required = False
-        self.fields['publish'].required = False
-        self.fields['views'].required = False
+        self.fields["topic"].required = False
+        self.fields["publish"].required = False
+        self.fields["views"].required = False
