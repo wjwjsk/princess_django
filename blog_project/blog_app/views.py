@@ -146,13 +146,14 @@ def postDtl(request, topic, board_id):
 
 def post_write(request):
     if request.method == "POST":
-        form = PostWriteForm(request.POST)
-        if form.is_valid():
-            board = form.save()
-            return redirect("/")
-            # return redirect('/post/'+str(board.pk))
-        print(form.errors)
-        return render(request, "post_write.html")
+        form = PostWriteForm(json.loads(request.body))
+        if form.is_valid() == False:
+            print(form.errors)
+            return JsonResponse({'message': '유효한 겂을 입력해주세요'}, status=400)
+        board =form.save();
+        if board == False:
+            return JsonResponse({'message': '글작성에 실패 했습니다'}, status=400)
+        return JsonResponse({'message': '게시글 쓰기가 성공했습니다', 'board_id': str(board.pk)}, status=200)
     elif request.method == "PUT":
         form = PostWriteForm(json.loads(request.body))
         print(request.body)
