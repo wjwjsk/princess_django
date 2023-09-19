@@ -43,6 +43,14 @@ body{
     flex: 1;
 }
 
+.title img{
+    width: 10%;
+    left: 10%;
+    position: fixed;
+    top: 1%;
+}
+
+
 .post-controller-container {
     display: flex;
     flex-direction: column;

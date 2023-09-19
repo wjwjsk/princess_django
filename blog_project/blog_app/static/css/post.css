@@ -2,6 +2,14 @@
    font-family: 'Noto Sans KR', sans-serif;
 }
 
+.title img{
+    width: 10%;
+    left: 10%;
+    position: fixed;
+    top: 1%;
+}
+
+
 body {
     background-color: #f9f8f4;
 }

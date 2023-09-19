@@ -1,10 +1,12 @@
 {% load static %}
 <div class="navbar-container">
     <div class="navbar">
+        <a href="{% url 'index' %}">
         <div class="title"> 
-            {% comment %} <img src="{% static 'img/logo.png' %}" alt="logo"> {% endcomment %}
-            <a href="{% url 'index' %}"><h1 class="h1_on_img">PrincessBLOG</h1></a>
+            <img src="{% static 'img/logo.png' %}" alt="logo">
+            {% comment %} <a href="{% url 'index' %}"><h1 class="h1_on_img">PrincessBLOG</h1></a> {% endcomment %}
         </div>
+        </a>
         <div class= "navbar-menu">
             <div class="topics">
                 <ul>
