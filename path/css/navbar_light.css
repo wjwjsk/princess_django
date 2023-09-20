@@ -1,0 +1,137 @@
+.navbar {
+    display: flex;
+    height: 105px;
+    width: 100%;
+    background: white;
+    z-index: 999;
+    color: black;
+    justify-content: space-around;
+    position: fixed;
+    top: 0;
+    text-decoration: none;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 38px;
+}
+
+
+a:link {
+    color : black;
+    text-decoration: none;
+}
+a:visited {
+    color : black;
+    text-decoration: none;
+}
+a:hover {
+    color : black;
+    text-decoration: none;
+}
+a:active {
+    color : black;
+    text-decoration: none;
+}
+  
+button{
+    cursor: pointer;
+    all: unset;
+}
+button:hover{
+    cursor: pointer;
+}
+
+.login-button {
+    display: inline-block;
+    background-color: black;
+    border-radius: 2px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 25px;
+    color: white;
+  }
+
+  .login-button:hover {
+    background-color: rgba(253, 245, 230, 0.699);
+    transition: transform 0.8s,  background-color 0.3s;
+    color: black;
+  }
+
+  .logout-button:hover{
+    color: rgb(255, 162, 162);
+    transition: transform 0.8s,  color 0.3s;
+  }
+
+  .login-button > a {
+    color: white;
+  }
+
+.title{
+    display: flex;
+    align-items: center;
+}
+
+
+
+.topics {
+    display: flex;
+}
+
+.topics > ul {
+    display: flex;
+    gap: 47px;
+    list-style: none;
+    padding-right: 40px;
+}
+
+.footer{
+    width: 100%;
+    background-color: #e7e3da;
+    height: 200px;
+    display: flex;
+    justify-content: end;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.footer .container{
+    align-items: self-end;
+    display: flex;
+    margin-right: 18%;
+}
+
+.footer .container p{
+    color: #1e1e1e;
+    justify-content: end;
+}
+
+span{
+    font-weight: bold;
+}
+
+
+.footer {
+    width: 100%;
+    background-color: #e7e3da;
+    height: 200px;
+    display: flex;
+    justify-content: end;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.footer .container {
+    align-items: self-end;
+    display: flex;
+}
+
+.footer .container p {
+    color: #1e1e1e;
+    justify-content: end;
+}
+
+span {
+    font-weight: bold;
+}
